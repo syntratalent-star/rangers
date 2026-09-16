@@ -164,7 +164,7 @@
       <li>Si algo no existe todavía (una foto, un dato, un precio), usen el botón <b>"NO EXISTE"</b> — es información igual de valiosa: nos dice qué hay que producir.</li>
       <li>Las preguntas <span class="chip p0">P0</span> son indispensables para arrancar; las <span class="chip p1">P1</span> pueden completarse durante el desarrollo.</li>
       <li>Al terminar (aunque falten algunas), bajen a <b>"Enviar respuestas"</b> y usen Copiar o Descargar para hacérnoslas llegar.</li>
-      <li>El material audiovisual (fotos, videos, logos) <b>no se sube aquí</b>: se entrega en la carpeta de Google Drive que les compartiremos (estructura en la sección 08).</li>
+      <li>El material audiovisual (fotos, videos, logos) <b>no se sube aquí</b>: súbanlo a una carpeta de Google Drive y <b>peguen el enlace en la sección 08</b> (ahí está la estructura sugerida y el campo para el enlace).</li>
     </ul>
   </div>
 
@@ -262,6 +262,8 @@ const SECTIONS = [
     {id:"acc-legal", q:"¿Existe aviso de privacidad / política de datos?", hint:"Obligatorio: los formularios recogen datos de menores (GDPR/normativa andorrana). Si no existe, coordinamos su redacción con su abogado.", chips:["Existe", NE]},
   ]},
   {n:"08", t:"Material audiovisual", pr:"p0", sub:"El sitio propuesto es visual: sin este material se ve a medias. Specs generales — Fotos: JPG o RAW, mínimo 2500 px lado largo, sin marcas de agua. Video: MP4 1080p mínimo, ideal 4K. Logos: vector. Todo por Google Drive, nada por WhatsApp (comprime y arruina la calidad).", qs:[
+    {id:"drive-carpeta", q:"📁 ENLACE DE DRIVE · Peguen aquí el enlace de la carpeta de Google Drive con todo su material (fotos, videos, logos, documentos)", hint:"Importante: en Compartir, activen \"Cualquiera con el enlace → Lector\" para que podamos descargarlo. Pueden usar la estructura de carpetas sugerida al final de esta sección. Si aún no tienen el material reunido, usen el botón de abajo y nosotros les creamos la carpeta lista para soltar archivos.", chips:["PENDIENTE — mándennos una carpeta lista"]},
+    {id:"drive-extras", q:"📁 ENLACE DE DRIVE · Enlaces adicionales de material (otras carpetas, otras cuentas, WeTransfer, Dropbox…)", hint:"Uno por línea, con una nota de qué contiene cada uno. Ej.: https://drive.google.com/… — fotos temporada 24/25", chips:["No hay más enlaces"]},
     {id:"av-plantilla", q:"FOTOS P0 · ¿Existe sesión oficial de plantilla? (retrato individual por jugador, mismo fondo y luz, vertical 3:4, jersey oficial)", hint:"Si no existe, la organizamos: 1 día de sesión resuelve todos los equipos. Es la foto de las cards de jugador.", chips:["Existe", NE+" — hay que producirla"]},
     {id:"av-fabian", q:"FOTOS P0 · Retratos oficiales de Marco Fabián en alta (3–5: formal con escudo + casual en estadio)", chips:["Existen", NE]},
     {id:"av-staff", q:"FOTOS P0 · Retratos de cuerpo técnico y directiva (mismas specs que jugadores)", chips:["Existen", NE]},
@@ -306,7 +308,7 @@ SECTIONS.forEach(s=>{
   });
   html += `</div>`;
   if(s.n==="08"){
-    html += `<div class="spec"><b>ENTREGA POR DRIVE</b> · Les compartiremos una carpeta con esta estructura — solo hay que soltar los archivos donde corresponde:</div>
+    html += `<div class="spec"><b>ENTREGA POR DRIVE</b> · Organicen su carpeta con esta estructura (o pidan arriba que les mandemos una ya creada) — solo hay que soltar los archivos donde corresponde:</div>
     <div class="folder"><b>RANGERS_FC_MATERIAL/</b>
 ├── <b>01_MARCA/</b>          escudo vector, manual, logos de patrocinadores
 ├── <b>02_PLANTILLAS/</b>     retratos por equipo (archivo = DORSAL_NOMBRE.jpg)
