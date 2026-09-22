@@ -1,475 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
 <meta charset="utf-8">
-<title>Levantamiento Ranger's F.C.</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cuestionario — Nuevo sitio Ranger's F.C.</title>
+<meta http-equiv="refresh" content="4; url=https://airtable.com/appDFPEDITr8GwZT3/pagebiEv45DvD4bPn/form">
 <style>
   :root{
-    --paper:#f7f8fb; --card:#ffffff; --ink:#151a26; --muted:#5b6472;
-    --line:#dde2ec; --blue:#233e94; --blue-deep:#16255c; --blue-soft:#e9edf9;
-    --yellow:#ffcb05; --crit:#c02f36; --crit-bg:#fbeced; --warn:#a36a00; --warn-bg:#fdf3dd;
-    --ok:#1f7a46; --ok-bg:#e8f5ee; --hero-ink:#ffffff; --hero-muted:#b9c3e4;
-    --field:#fbfcfe; --focus:#233e94;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --paper:#101420; --card:#181e2e; --ink:#e8ebf4; --muted:#9aa3b8;
-      --line:#2b3349; --blue:#8ba1e8; --blue-deep:#0d1330; --blue-soft:#1f2740;
-      --yellow:#ffd23f; --crit:#ff7b81; --crit-bg:#3a1d22; --warn:#f0b455; --warn-bg:#3a2e17;
-      --ok:#5fc98d; --ok-bg:#16311f; --hero-ink:#f2f4fb; --hero-muted:#9aa8d8;
-      --field:#131a2b; --focus:#8ba1e8;
-    }
-  }
-  :root[data-theme="dark"]{
-    --paper:#101420; --card:#181e2e; --ink:#e8ebf4; --muted:#9aa3b8;
-    --line:#2b3349; --blue:#8ba1e8; --blue-deep:#0d1330; --blue-soft:#1f2740;
-    --yellow:#ffd23f; --crit:#ff7b81; --crit-bg:#3a1d22; --warn:#f0b455; --warn-bg:#3a2e17;
-    --ok:#5fc98d; --ok-bg:#16311f; --hero-ink:#f2f4fb; --hero-muted:#9aa8d8;
-    --field:#131a2b; --focus:#8ba1e8;
+    --navy:#0e1633; --blue:#233e94; --gold:#ffcb05; --chalk:#f2f4fb; --mist:#98a5ce;
   }
   *{box-sizing:border-box}
   body{
-    margin:0;background:var(--paper);color:var(--ink);
+    margin:0;min-height:100vh;display:grid;place-items:center;
+    background:radial-gradient(700px 420px at 80% -10%, rgba(62,92,196,.28), transparent 60%), var(--navy);
+    color:var(--chalk);
     font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
-    font-size:16px;line-height:1.6;
+    text-align:center;padding:24px;
   }
-  .hero{background:var(--blue-deep);color:var(--hero-ink);padding:44px 24px 36px;border-bottom:4px solid var(--yellow)}
-  .hero-inner{max-width:820px;margin:0 auto}
-  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin:0 0 12px}
-  h1{font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(26px,5vw,40px);line-height:1.08;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
-  .hero p{color:var(--hero-muted);max-width:66ch;margin:0;font-size:15.5px}
-  .hero p strong{color:var(--hero-ink);font-weight:600}
-
-  .bar{
-    position:sticky;top:0;z-index:40;
-    background:var(--card);border-bottom:1px solid var(--line);
-    padding:10px 24px;
+  .card{max-width:520px}
+  .crest{
+    width:56px;height:62px;margin:0 auto 22px;
+    background:var(--blue);
+    clip-path:polygon(0 0,100% 0,100% 68%,50% 100%,0 68%);
+    display:grid;place-items:center;
+    font-family:"Archivo",sans-serif;font-weight:900;font-size:24px;color:var(--gold);
   }
-  .bar-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .bar .cnt{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);white-space:nowrap}
-  .bar .cnt b{color:var(--ink);font-weight:500}
-  .track{flex:1;min-width:140px;height:8px;background:var(--blue-soft);border-radius:99px;overflow:hidden}
-  .fill{height:100%;width:0%;background:var(--yellow);border-radius:99px;transition:width 400ms cubic-bezier(0.23,1,0.32,1)}
-  .saved{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ok);white-space:nowrap;opacity:0;transition:opacity 200ms ease}
-  .saved.on{opacity:1}
-
-  main{max-width:820px;margin:0 auto;padding:32px 24px 90px}
-  .howto{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--yellow);border-radius:6px;padding:18px 22px;margin:0 0 10px}
-  .howto h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;margin:0 0 8px}
-  .howto ul{margin:0;padding-left:20px}
-  .howto li{margin-bottom:5px;font-size:14px}
-  .howto li b{font-weight:600}
-
-  h2{font-family:"Archivo",sans-serif;font-weight:800;font-size:21px;margin:46px 0 4px;display:flex;align-items:baseline;gap:12px;text-wrap:balance}
-  h2 .sec{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;color:var(--blue)}
-  .h2-sub{color:var(--muted);margin:0 0 16px;max-width:68ch;font-size:14.5px}
-  .chip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:99px;vertical-align:2px}
-  .chip.p0{background:var(--crit-bg);color:var(--crit)}
-  .chip.p1{background:var(--warn-bg);color:var(--warn)}
-
-  .qgroup{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 22px 18px;margin:0 0 14px}
-  .qgroup h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;margin:18px 0 2px}
-  .q{padding:14px 0 4px;border-bottom:1px solid var(--line)}
-  .q:last-child{border-bottom:none}
-  .q label{display:block;font-size:15px;font-weight:500;cursor:pointer}
-  .q label .qn{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--blue);margin-right:8px}
-  .q .hint{display:block;color:var(--muted);font-size:13px;margin:2px 0 0;font-weight:400}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
-  .chips button{
-    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;
-    background:var(--blue-soft);color:var(--blue);border:1px solid transparent;
-    border-radius:99px;padding:4px 12px;cursor:pointer;
-    transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background-color 160ms ease,color 160ms ease;
+  .kicker{
+    font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold);margin:0 0 12px;
   }
-  .chips button:active{transform:scale(0.96)}
-  @media (hover:hover) and (pointer:fine){.chips button:hover{background:var(--blue);color:#fff}}
-  textarea,input[type=text]{
-    width:100%;margin-top:10px;
-    background:var(--field);color:var(--ink);
-    border:1px solid var(--line);border-radius:6px;
-    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14.5px;line-height:1.55;
-    padding:10px 12px;resize:none;
-    transition:border-color 160ms ease,box-shadow 160ms ease;
+  h1{
+    font-family:"Archivo",system-ui,sans-serif;font-weight:800;
+    font-size:clamp(24px,5vw,34px);line-height:1.1;margin:0 0 14px;
   }
-  textarea{min-height:44px;overflow:hidden}
-  textarea:focus,input[type=text]:focus{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb, var(--focus) 18%, transparent)}
-  .q.done label .qn{color:var(--ok)}
-
-  .who{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
-  @media (max-width:600px){.who{grid-template-columns:1fr}}
-
-  .spec{background:var(--blue-soft);border-radius:6px;padding:13px 18px;margin:14px 0 4px;font-size:13.5px}
-  .spec b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:12px;letter-spacing:.04em}
-  .folder{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.85;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px 22px;margin:12px 0 4px;overflow-x:auto;white-space:pre}
-  .folder b{color:var(--blue);font-weight:500}
-
-  .send{
-    background:var(--blue-deep);color:var(--hero-ink);
-    border-radius:8px;padding:30px 28px;margin-top:52px;
-  }
-  .send h2{color:var(--hero-ink);margin:0 0 6px}
-  .send p{color:var(--hero-muted);margin:0 0 20px;max-width:60ch;font-size:15px}
-  .send .missing{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--yellow);margin:0 0 18px}
-  .btns{display:flex;gap:12px;flex-wrap:wrap}
+  p{color:var(--mist);font-size:15.5px;line-height:1.6;margin:0 0 28px}
   .btn{
-    font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;
+    display:inline-block;background:var(--gold);color:#131313;
+    font-family:"Archivo",system-ui,sans-serif;font-weight:700;font-size:15px;
     text-transform:uppercase;letter-spacing:.03em;text-decoration:none;
-    border-radius:5px;padding:13px 22px;cursor:pointer;border:1px solid transparent;
-    display:inline-flex;align-items:center;gap:8px;
-    transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background-color 160ms ease,border-color 160ms ease;
+    padding:15px 30px;border-radius:5px;
+    transition:transform 160ms cubic-bezier(0.23,1,0.32,1),background-color 160ms ease;
   }
   .btn:active{transform:scale(0.97)}
-  .btn-gold{background:var(--yellow);color:#131313}
-  .btn-ghost{background:transparent;color:var(--hero-ink);border-color:rgba(185,195,228,.5)}
-  @media (hover:hover) and (pointer:fine){
-    .btn-gold:hover{background:#ffd83f}
-    .btn-ghost:hover{border-color:var(--yellow);color:var(--yellow)}
-  }
-  .toast{
-    position:fixed;left:50%;bottom:26px;transform:translate(-50%,0);
-    background:var(--ink);color:var(--paper);
-    font-size:14px;font-weight:500;border-radius:6px;padding:10px 18px;
-    opacity:1;transition:opacity 200ms ease,transform 300ms cubic-bezier(0.23,1,0.32,1);
-    z-index:60;pointer-events:none;
-    @starting-style{opacity:0;transform:translate(-50%,10px)}
-  }
-  .toast[hidden]{display:none}
-  .foot{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
-  @media (prefers-reduced-motion: reduce){
-    .fill{transition:none}
-    .btn,.chips button{transition:none}
-  }
+  @media (hover:hover) and (pointer:fine){.btn:hover{background:#ffd83f}}
+  .tip{font-size:12.5px;color:var(--mist);margin-top:26px;font-family:ui-monospace,monospace}
 </style>
-
-<header class="hero">
-  <div class="hero-inner">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=IBM+Plex+Sans:wght@400;600&display=swap">
+</head>
+<body>
+  <main class="card">
+    <div class="crest" aria-hidden="true">R</div>
     <p class="kicker">Syntra Talent · Levantamiento de proyecto</p>
-    <h1>Cuestionario para el nuevo sitio del Ranger's F.C.</h1>
-    <p>Todo lo que necesitamos del club para construir la página: información, decisiones y material audiovisual. <strong>Respondan directamente aquí</strong> — el borrador se guarda solo en este navegador y al final envían todo con un botón.</p>
-  </div>
-</header>
-
-<div class="bar">
-  <div class="bar-in">
-    <span class="cnt"><b id="nDone">0</b> / <span id="nTotal">0</span> respondidas</span>
-    <div class="track"><div class="fill" id="fill"></div></div>
-    <span class="cnt" id="p0Cnt"></span>
-    <span class="saved" id="saved">✓ Borrador guardado</span>
-  </div>
-</div>
-
-<main>
-  <div class="howto">
-    <h3>Cómo funciona</h3>
-    <ul>
-      <li>Escriban su respuesta debajo de cada pregunta. <b>Se guarda automáticamente</b> en este navegador — pueden cerrar y volver después (desde el mismo dispositivo).</li>
-      <li>Si algo no existe todavía (una foto, un dato, un precio), usen el botón <b>"NO EXISTE"</b> — es información igual de valiosa: nos dice qué hay que producir.</li>
-      <li>Las preguntas <span class="chip p0">P0</span> son indispensables para arrancar; las <span class="chip p1">P1</span> pueden completarse durante el desarrollo.</li>
-      <li>Al terminar (aunque falten algunas), bajen a <b>"Enviar respuestas"</b> y usen Copiar o Descargar para hacérnoslas llegar.</li>
-      <li>El material audiovisual (fotos, videos, logos) <b>no se sube aquí</b>: súbanlo a una carpeta de Google Drive y <b>peguen el enlace en la sección 08</b> (ahí está la estructura sugerida y el campo para el enlace).</li>
-    </ul>
-  </div>
-
-  <div id="app"></div>
-
-  <section class="send" id="send">
-    <h2>Enviar respuestas</h2>
-    <p>Pueden enviar aunque falten preguntas — indíquennos qué queda pendiente y para cuándo. Al copiar o descargar se genera un documento con todas sus respuestas.</p>
-    <p class="missing" id="missing"></p>
-    <div class="btns">
-      <button class="btn btn-gold" id="btnCopy">📋 Copiar respuestas</button>
-      <button class="btn btn-ghost" id="btnDl" hidden>⬇ Descargar .txt</button>
-      <a class="btn btn-ghost" id="btnMail" href="#">✉ Abrir correo</a>
-    </div>
-  </section>
-
-  <p class="foot">Syntra Talent · Levantamiento Ranger's F.C. Andorra · v2 interactiva · Septiembre 2026</p>
-</main>
-
-<div class="toast" id="toast" hidden></div>
-
-<script>
-"use strict";
-const MAIL_TO = "edgar.javier.fl@gmail.com";
-const LS_KEY = "rangers-levantamiento-v1";
-
-const NE = "NO EXISTE";
-const SECTIONS = [
-  {n:"00", t:"Quién responde", pr:null, sub:"Para saber con quién damos seguimiento.", cls:"who", qs:[
-    {id:"resp-nombre", q:"Nombre completo"},
-    {id:"resp-cargo", q:"Cargo en el club"},
-    {id:"resp-correo", q:"Correo"},
-    {id:"resp-tel", q:"Teléfono / WhatsApp"},
-  ]},
-  {n:"01", t:"Identidad y marca", pr:"p0", sub:"La base visual y legal de todo el sitio.", qs:[
-    {id:"marca-escudo", q:"¿Tienen el escudo oficial en vector (AI, EPS o SVG)?", hint:"Si solo existe en imagen (PNG/JPG), díganlo: lo redibujaremos en vector y necesitaremos su aprobación.", chips:["SÍ, lo tenemos", NE]},
-    {id:"marca-manual", q:"¿Existe un manual de marca (colores con códigos, tipografías, usos del escudo)?", hint:"Si no existe, ¿aprueban que definamos los colores definitivos a partir del azul y amarillo actuales?", chips:["SÍ, existe", NE+" — definan ustedes"]},
-    {id:"marca-nombre", q:"Nombre legal del club y cómo debe escribirse comercialmente", hint:"Hoy el sitio mezcla \"Ranger´s\", \"Rangers\" y \"Ranger's\". Necesitamos LA versión oficial."},
-    {id:"inst-razon", q:"Razón social del club"},
-    {id:"inst-direccion", q:"Dirección completa (calle, número, código postal, parroquia)"},
-    {id:"inst-telefono", q:"Teléfono oficial"},
-    {id:"inst-correo-general", q:"Correo de contacto general"},
-    {id:"inst-correo-prensa", q:"Correo de prensa", chips:[NE+" — usar el general"]},
-    {id:"inst-correo-comercial", q:"Correo comercial / patrocinios", chips:[NE+" — usar el general"]},
-    {id:"inst-correo-visorias", q:"Correo de visorías", chips:[NE+" — usar el general"]},
-    {id:"marca-idiomas", q:"Idiomas del sitio: proponemos Español (principal) + Catalán + Inglés. ¿Confirman? ¿Quién valida las traducciones al catalán?", chips:["Confirmamos los 3","Solo ES + EN","Solo ES"]},
-    {id:"hist-fundacion", q:"Año de fundación del club", hint:"Hoy hay datos contradictorios entre páginas del sitio actual — validen cada dato de historia."},
-    {id:"hist-palmares", q:"Palmarés exacto con temporadas (ligas, supercopas, copas)"},
-    {id:"hist-champions", q:"Participación en UEFA Champions League: año y rival"},
-    {id:"hist-regreso", q:"Regreso a Primera División: ¿en qué año y cómo fue?"},
-  ]},
-  {n:"02", t:"El proyecto México→Europa", pr:"p0", sub:"La narrativa central del sitio. Sin esto no hay diferenciación.", qs:[
-    {id:"mf-bio", q:"Biografía oficial aprobada de Marco Fabián como presidente", hint:"¿Qué se puede decir y qué no?"},
-    {id:"mf-rostro", q:"¿Marco Fabián autoriza ser el rostro central del proyecto en el sitio (página propia, quotes, foto en el home)?", chips:["SÍ","NO","Hay que consultarlo"]},
-    {id:"mf-sesion", q:"¿Está disponible para una sesión de fotos oficial y un video corto (1–2 min) presentando el proyecto? ¿Fechas posibles?"},
-    {id:"caf-alianza", q:"¿Qué es exactamente la alianza con Deportivo Cafessa y qué podemos publicar?", hint:"Rol de cada parte, quién opera las visorías en México, desde cuándo."},
-    {id:"caf-logo", q:"Logo de Cafessa en vector y lineamientos de uso", chips:["Lo tenemos", NE]},
-    {id:"casos-exito", q:"¿Existen casos de éxito (jugadores que pasaron de visoría a Andorra)? Por cada uno: nombre, edad, ciudad, año, situación actual y autorización de imagen firmada", hint:"Es la prueba social más valiosa del sitio. Si aún no hay, lo diremos con honestidad de otra forma.", chips:[NE+" todavía"]},
-  ]},
-  {n:"03", t:"Visorías — el producto", pr:"p0", sub:"La página de mayor conversión. Cada dato faltante es dinero que no entra.", qs:[
-    {id:"vis-fechas", q:"Calendario de convocatorias 2026–2027 por sede (México, USA, Andorra): fechas, ciudad y sede exacta", hint:"Si no hay fechas cerradas, ¿aprueban el modo \"pre-registro\" del prototipo?", chips:["Aprobamos modo pre-registro"]},
-    {id:"vis-edades", q:"Categorías de edad aceptadas por sede (años de nacimiento)"},
-    {id:"vis-costo", q:"Costo de la visoría por sede y qué incluye exactamente", hint:"Evaluación, reporte, video, alimentación, seguro…"},
-    {id:"vis-pipeline", q:"Proceso completo del jugador: qué pasa después de la visoría, cuántos son seleccionados, qué sigue y en qué tiempos"},
-    {id:"vis-requisitos", q:"Requisitos: documentación, pasaporte, condición física. ¿Necesitan visa para Andorra/España?"},
-    {id:"vis-reembolsos", q:"Política de pagos y reembolsos", hint:"¿Qué pasa si se cancela una fecha o el jugador no asiste?"},
-    {id:"vis-pasarela", q:"¿Con qué pasarela quieren cobrar (Stripe, MercadoPago, transferencia)? ¿A qué entidad legal y en qué moneda (MXN/USD/EUR)?"},
-    {id:"vis-leads", q:"¿Quién recibe y responde los registros? (nombre, correo, WhatsApp) ¿En cuánto tiempo se comprometen a responder?"},
-    ...Array.from({length:10},(_,i)=>({id:"vis-faq-"+(i+1), q:`FAQ ${i+1} de 10 · Pregunta frecuente de las familias — y cómo la responden`, hint: i===0 ? "Incluyan las incómodas: \"¿es una estafa?\", \"¿cuánto cuesta todo el proceso?\", \"¿garantizan contrato?\"" : undefined})),
-  ]},
-  {n:"04", t:"Deportivo", pr:"p0", sub:"Equipos, plantillas y competencia — el contenido vivo del sitio.", qs:[
-    {id:"dep-plantillas", q:"Plantilla 26/27 de cada equipo (fútbol, futsal, femenil, base): nombre, dorsal, posición, nacionalidad, año de nacimiento", hint:"Les pasamos una plantilla de Excel para llenarla — aquí indiquen quién la llenará y para cuándo."},
-    {id:"dep-staff", q:"Cuerpo técnico por equipo: nombre, rol y foto", chips:["Tenemos fotos","Faltan fotos"]},
-    {id:"dep-calendario", q:"Calendario oficial de la temporada: jornadas, rivales, sede y horarios. ¿La FAF lo publica en algún lado de donde podamos tomarlo?"},
-    {id:"dep-resultados", q:"¿Quién reportará resultados y marcadores después de cada jornada? (persona + vía)", hint:"Definiremos un flujo de 5 minutos por jornada."},
-    {id:"dep-estadio", q:"Estadio: nombre oficial, dirección, aforo. ¿Cómo se accede a los partidos? (entrada libre, boleto, precio)"},
-    {id:"dep-youtube", q:"Enlace del canal de YouTube. ¿Transmiten todos los partidos?"},
-  ]},
-  {n:"05", t:"Comercial", pr:"p1", sub:"Membresías, patrocinio y tienda. Decisiones de negocio antes que de diseño.", qs:[
-    {id:"com-socios", q:"¿Aprueban lanzar el programa de socios? El prototipo propone 3 niveles (Blau / Or / Padrí de Talent). ¿Qué precios reales quieren?", hint:"Los €60/€150/€500 del prototipo son demostrativos.", chips:["Aprobado, definir precios","Hay que discutirlo"]},
-    {id:"com-beneficios", q:"¿Qué beneficios de socio pueden cumplir de verdad?", hint:"Jersey, sorteo de viaje, acceso a partidos, reporte del jugador becado… Solo publicaremos lo que se pueda cumplir."},
-    {id:"com-sponsors", q:"Lista definitiva de patrocinadores vigentes, con logo en vector de cada uno y su nivel (principal / oficial / partner)", hint:"Hoy aparecen con nombres inconsistentes (\"9izzoma\"/\"Rizzoma\", \"Bak'tal\"/\"Baktal\")."},
-    {id:"com-metricas", q:"Métricas para el media kit: seguidores por red, alcance, asistencia promedio, vistas de YouTube", hint:"Con accesos a las cuentas las extraemos nosotros (sección 07)."},
-    {id:"com-contacto", q:"Contacto comercial para patrocinios (persona + correo)"},
-    {id:"com-tienda", q:"¿Existe merchandising (jersey, bufanda…)? ¿Quién lo produce y quién enviaría pedidos? ¿O lo dejamos para una fase posterior?", chips:[NE+" — fase posterior"]},
-    {id:"com-boletos", q:"¿Quieren vender boletos/abonos en línea?", chips:["SÍ","NO","Después"]},
-  ]},
-  {n:"06", t:"Escuela y fútbol base", pr:"p1", qs:[
-    {id:"esc-precio", q:"Precio vigente de la escuela temporada 26/27 y qué incluye", hint:"El sitio actual dice \"99 €/año temporada 24/25\" — caducado."},
-    {id:"esc-horarios", q:"Categorías, horarios y sede de entrenamientos por categoría"},
-    {id:"esc-inscripcion", q:"Proceso de inscripción y documentos del menor. ¿Pago en línea o presencial?"},
-    {id:"esc-fechas", q:"Fechas de inicio y fin de temporada"},
-  ]},
-  {n:"07", t:"Accesos técnicos", pr:"p0", sub:"El sitio será uno nuevo, construido desde cero. Estos accesos son necesarios para apuntar el dominio, conservar el historial y medir. Para cada uno: quién lo controla y cuándo nos lo comparten.", qs:[
-    {id:"acc-dominio", q:"Dominio rangersfc.ad: ¿en qué registrador está y quién lo controla?", hint:"Para apuntarlo al sitio nuevo cuando esté listo.", chips:["Pendiente","No sabemos"]},
-    {id:"acc-google", q:"Google Search Console / Analytics (si existen)", chips:["Existen","No existen","No sabemos"]},
-    {id:"acc-youtube", q:"Acceso de gestor al canal de YouTube (o enlaces oficiales)"},
-    {id:"acc-redes", q:"Enlaces oficiales confirmados de todas las redes sociales", hint:"Para enlazar solo las cuentas reales."},
-    {id:"acc-newsletter", q:"Export de la base de datos del newsletter actual", chips:["La tenemos", NE]},
-    {id:"acc-fiscal", q:"Datos fiscales de la entidad que cobrará (visorías/socios)", hint:"Para la pasarela de pago y facturación."},
-    {id:"acc-editor", q:"¿Quién del club actualizará contenido después del lanzamiento? (persona y nivel técnico)", hint:"Define qué tan amigable debe ser el panel de administración."},
-    {id:"acc-legal", q:"¿Existe aviso de privacidad / política de datos?", hint:"Obligatorio: los formularios recogen datos de menores (GDPR/normativa andorrana). Si no existe, coordinamos su redacción con su abogado.", chips:["Existe", NE]},
-  ]},
-  {n:"08", t:"Material audiovisual", pr:"p0", sub:"El sitio propuesto es visual: sin este material se ve a medias. Specs generales — Fotos: JPG o RAW, mínimo 2500 px lado largo, sin marcas de agua. Video: MP4 1080p mínimo, ideal 4K. Logos: vector. Todo por Google Drive, nada por WhatsApp (comprime y arruina la calidad).", qs:[
-    {id:"drive-carpeta", q:"📁 ENLACE DE DRIVE · Peguen aquí el enlace de la carpeta de Google Drive con todo su material (fotos, videos, logos, documentos)", hint:"Importante: en Compartir, activen \"Cualquiera con el enlace → Lector\" para que podamos descargarlo. Pueden usar la estructura de carpetas sugerida al final de esta sección. Si aún no tienen el material reunido, usen el botón de abajo y nosotros les creamos la carpeta lista para soltar archivos.", chips:["PENDIENTE — mándennos una carpeta lista"]},
-    {id:"drive-extras", q:"📁 ENLACE DE DRIVE · Enlaces adicionales de material (otras carpetas, otras cuentas, WeTransfer, Dropbox…)", hint:"Uno por línea, con una nota de qué contiene cada uno. Ej.: https://drive.google.com/… — fotos temporada 24/25", chips:["No hay más enlaces"]},
-    {id:"av-plantilla", q:"FOTOS P0 · ¿Existe sesión oficial de plantilla? (retrato individual por jugador, mismo fondo y luz, vertical 3:4, jersey oficial)", hint:"Si no existe, la organizamos: 1 día de sesión resuelve todos los equipos. Es la foto de las cards de jugador.", chips:["Existe", NE+" — hay que producirla"]},
-    {id:"av-fabian", q:"FOTOS P0 · Retratos oficiales de Marco Fabián en alta (3–5: formal con escudo + casual en estadio)", chips:["Existen", NE]},
-    {id:"av-staff", q:"FOTOS P0 · Retratos de cuerpo técnico y directiva (mismas specs que jugadores)", chips:["Existen", NE]},
-    {id:"av-matchday", q:"FOTOS P0 · Estadio y matchday: 10–15 fotos de ambiente (cancha, afición, túnel, vestidor, celebraciones)", hint:"Son los fondos del hero y las secciones.", chips:["Existen", NE]},
-    {id:"av-grupal", q:"FOTOS P0 · Foto grupal oficial de cada equipo", chips:["Existen", NE]},
-    {id:"av-visorias", q:"FOTOS P1 · Fotos reales de visorías anteriores en México/USA", hint:"Con autorización de imagen de los menores que aparezcan.", chips:["Existen", NE]},
-    {id:"av-escuela", q:"FOTOS P1 · Escuela y fútbol base entrenando", chips:["Existen", NE]},
-    {id:"av-historicas", q:"FOTOS P1 · Fotos históricas de los títulos 2005–07 y Champions League (escaneadas en alta)", hint:"Oro puro para la sección de historia.", chips:["Existen", NE]},
-    {id:"av-video-inst", q:"VIDEO · ¿Existe material para el video institucional del proyecto (60–90 s: Marco Fabián + club + visorías) o lo producimos?", hint:"Puede lanzarse el sitio sin él y sumarse en la semana 2.", chips:["Hay material","Producirlo desde cero"]},
-    {id:"av-highlights", q:"VIDEO · Highlights de partidos: ¿quién los edita hoy? ¿Podemos tomar clips del canal de YouTube?"},
-    {id:"av-testimonios", q:"VIDEO · ¿Pueden conseguir 2–3 testimonios de 30 s de familias/jugadores de visorías?", hint:"Pueden grabarse con celular en horizontal, bien iluminados.", chips:["SÍ","Difícil"]},
-    {id:"av-broll", q:"VIDEO · Material B-roll existente: entrenamientos, llegadas, vestidor, dron del estadio", chips:["Existe", NE]},
-    {id:"av-derechos", q:"DERECHOS P0 · ¿Las fotos existentes tienen derechos cedidos al club? (nombre del fotógrafo y qué se firmó)"},
-    {id:"av-menores", q:"DERECHOS P0 · ¿Existen autorizaciones de imagen de menores firmadas (escuela/base/visorías)?", hint:"Si no, les entregamos el formato para recabarlas — sin esto no publicamos rostros de menores.", chips:["Existen", NE+" — mándennos el formato"]},
-  ]},
-  {n:"09", t:"Cierre", pr:null, qs:[
-    {id:"fin-responsable", q:"¿Quién es el responsable único del lado del club para este proyecto? (nombre, cargo, WhatsApp, correo)"},
-    {id:"fin-aprueba", q:"¿Quién aprueba finalmente diseño y contenidos?", hint:"Idealmente la misma persona o máximo dos."},
-    {id:"fin-fecha", q:"¿Hay fecha objetivo de lanzamiento? (inicio de torneo, evento, convocatoria de visorías…)"},
-  ]},
-];
-
-const P0_SECS = new Set(SECTIONS.filter(s=>s.pr==="p0").map(s=>s.n));
-const ALL = [];
-SECTIONS.forEach(s=>s.qs.forEach(q=>ALL.push({...q, sec:s})));
-
-/* ---------- render ---------- */
-const app = document.getElementById("app");
-let html = "";
-SECTIONS.forEach(s=>{
-  html += `<h2><span class="sec">${s.n}</span>${esc(s.t)}${s.pr?` <span class="chip ${s.pr}">${s.pr.toUpperCase()}</span>`:""}</h2>`;
-  if(s.sub) html += `<p class="h2-sub">${esc(s.sub)}</p>`;
-  html += `<div class="qgroup${s.cls?" "+s.cls:""}">`;
-  s.qs.forEach((q,i)=>{
-    html += `<div class="q" id="q-${q.id}">
-      <label for="f-${q.id}"><span class="qn">${s.n}.${String(i+1).padStart(2,"0")}</span>${esc(q.q)}${q.hint?`<span class="hint">${esc(q.hint)}</span>`:""}</label>`;
-    if(q.chips){
-      html += `<div class="chips">`+q.chips.map(c=>`<button type="button" data-chip="${esc(c)}" data-for="${q.id}">${esc(c)}</button>`).join("")+`</div>`;
-    }
-    html += `<textarea id="f-${q.id}" data-id="${q.id}" rows="1" placeholder="Escriban aquí…"></textarea></div>`;
-  });
-  html += `</div>`;
-  if(s.n==="08"){
-    html += `<div class="spec"><b>ENTREGA POR DRIVE</b> · Organicen su carpeta con esta estructura (o pidan arriba que les mandemos una ya creada) — solo hay que soltar los archivos donde corresponde:</div>
-    <div class="folder"><b>RANGERS_FC_MATERIAL/</b>
-├── <b>01_MARCA/</b>          escudo vector, manual, logos de patrocinadores
-├── <b>02_PLANTILLAS/</b>     retratos por equipo (archivo = DORSAL_NOMBRE.jpg)
-├── <b>03_STAFF/</b>          cuerpo técnico y directiva
-├── <b>04_MARCO_FABIAN/</b>   retratos oficiales
-├── <b>05_ESTADIO_MATCHDAY/</b>
-├── <b>06_VISORIAS/</b>       fotos y video de pruebas anteriores
-├── <b>07_ESCUELA_BASE/</b>
-├── <b>08_HISTORICO/</b>      títulos y Champions
-├── <b>09_VIDEO/</b>          institucional, b-roll, testimonios
-└── <b>10_DOCUMENTOS/</b>     autorizaciones de imagen, cesiones de derechos</div>`;
-  }
-});
-app.innerHTML = html;
-document.getElementById("nTotal").textContent = ALL.length;
-
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-
-/* ---------- state ---------- */
-let data = {};
-try{
-  const raw = localStorage.getItem(LS_KEY);
-  if(raw) data = JSON.parse(raw).fields || {};
-}catch(e){ data = {}; }
-
-const fields = Array.from(document.querySelectorAll("textarea[data-id]"));
-fields.forEach(f=>{
-  const v = data[f.dataset.id];
-  if(typeof v === "string") f.value = v;
-  grow(f);
-  f.addEventListener("input", ()=>{ grow(f); onChange(f); });
-});
-
-function grow(f){ f.style.height = "auto"; f.style.height = (f.scrollHeight + 2) + "px"; }
-
-let saveTimer = null;
-function onChange(f){
-  data[f.dataset.id] = f.value;
-  markDone(f);
-  updateProgress();
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(persist, 500);
-}
-function persist(){
-  try{
-    localStorage.setItem(LS_KEY, JSON.stringify({fields:data, ts:Date.now()}));
-    const s = document.getElementById("saved");
-    s.classList.add("on");
-    clearTimeout(persist._t);
-    persist._t = setTimeout(()=>s.classList.remove("on"), 1600);
-  }catch(e){ /* storage unavailable — export still works */ }
-}
-function markDone(f){
-  const wrap = document.getElementById("q-"+f.dataset.id);
-  if(wrap) wrap.classList.toggle("done", f.value.trim().length>0);
-}
-function answered(){ return ALL.filter(q=>(data[q.id]||"").trim().length>0); }
-function updateProgress(){
-  const done = answered().length;
-  document.getElementById("nDone").textContent = done;
-  document.getElementById("fill").style.width = (ALL.length? (done/ALL.length*100):0) + "%";
-  const p0 = ALL.filter(q=>P0_SECS.has(q.sec.n));
-  const p0done = p0.filter(q=>(data[q.id]||"").trim().length>0).length;
-  document.getElementById("p0Cnt").textContent = `P0: ${p0done}/${p0.length}`;
-  const missing = ALL.length - done;
-  document.getElementById("missing").textContent = missing===0 ? "✓ Cuestionario completo — gracias." : `Faltan ${missing} preguntas por responder (pueden enviar de todas formas).`;
-}
-fields.forEach(markDone);
-updateProgress();
-
-/* chips */
-document.querySelectorAll("[data-chip]").forEach(b=>{
-  b.addEventListener("click", ()=>{
-    const f = document.getElementById("f-"+b.dataset.for);
-    if(!f) return;
-    const t = b.dataset.chip;
-    f.value = f.value.trim() ? (f.value.replace(/\s+$/,"") + " — " + t) : t;
-    grow(f); onChange(f); f.focus();
-  });
-});
-
-/* ---------- export ---------- */
-function buildText(){
-  const d = new Date();
-  const lines = [];
-  lines.push("RESPUESTAS — LEVANTAMIENTO RANGER'S F.C. ANDORRA");
-  lines.push("Syntra Talent · " + d.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"}));
-  lines.push("=".repeat(56));
-  const pend = [];
-  SECTIONS.forEach(s=>{
-    lines.push("");
-    lines.push(`[${s.n}] ${s.t.toUpperCase()}${s.pr?` (${s.pr.toUpperCase()})`:""}`);
-    lines.push("-".repeat(44));
-    s.qs.forEach((q,i)=>{
-      const v = (data[q.id]||"").trim();
-      const num = `${s.n}.${String(i+1).padStart(2,"0")}`;
-      lines.push(`${num} ${q.q}`);
-      if(v){ lines.push(`     R: ${v.replace(/\n/g,"\n        ")}`); }
-      else { lines.push(`     R: (sin responder)`); pend.push(`${num} ${q.q}`); }
-      lines.push("");
-    });
-  });
-  if(pend.length){
-    lines.push("=".repeat(56));
-    lines.push(`PENDIENTES (${pend.length}):`);
-    pend.forEach(p=>lines.push("  · "+p));
-  }
-  return lines.join("\n");
-}
-
-function toast(msg){
-  const t = document.getElementById("toast");
-  t.hidden = true;
-  requestAnimationFrame(()=>{ t.textContent = msg; t.hidden = false;
-    clearTimeout(toast._t); toast._t = setTimeout(()=>{t.hidden = true}, 2600); });
-}
-
-document.getElementById("btnCopy").addEventListener("click", async ()=>{
-  const text = buildText();
-  try{
-    await navigator.clipboard.writeText(text);
-    toast("✓ Respuestas copiadas — péguenlas en un correo o WhatsApp");
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = text; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand("copy"); toast("✓ Respuestas copiadas"); }
-    catch(e2){ toast("No se pudo copiar — usen Descargar .txt"); }
-    ta.remove();
-  }
-});
-
-const mail = document.getElementById("btnMail");
-function refreshMail(){
-  const subject = encodeURIComponent("Respuestas — Levantamiento Ranger's F.C.");
-  const body = encodeURIComponent("Hola Edgar,\n\nTe compartimos las respuestas del cuestionario (pegadas abajo con el botón Copiar, o adjuntas como .txt):\n\n");
-  mail.href = `mailto:${MAIL_TO}?subject=${subject}&body=${body}`;
-}
-refreshMail();
-
-(async ()=>{
-  try{
-    const downloads = await claude.use("downloads");
-    if(!downloads) return;
-    const btn = document.getElementById("btnDl");
-    btn.hidden = false;
-    btn.addEventListener("click", async ()=>{
-      try{
-        await downloads.save({filename:"respuestas-rangers-fc.txt", data: buildText()});
-        toast("✓ Archivo guardado — envíenlo por correo o WhatsApp");
-      }catch(e){
-        if(e && e.code === "declined") return;
-        if(e && e.code === "rate_limited"){ toast("Esperen un momento e intenten de nuevo"); return; }
-        toast("No se pudo descargar — usen Copiar respuestas");
-      }
-    });
-  }catch(e){ /* downloads unavailable — copy remains */ }
-})();
-</script>
+    <h1>Cuestionario — Nuevo sitio Ranger's F.C.</h1>
+    <p>Te estamos llevando al cuestionario. Pueden <strong style="color:var(--chalk)">enviar varias veces</strong>: si no terminan hoy, envíen lo que llevan y completen el resto en otro envío.</p>
+    <a class="btn" href="https://airtable.com/appDFPEDITr8GwZT3/pagebiEv45DvD4bPn/form">Abrir el cuestionario</a>
+    <p class="tip">Si no avanza automáticamente, usa el botón.</p>
+  </main>
+  <script>
+    setTimeout(function(){
+      window.location.href = "https://airtable.com/appDFPEDITr8GwZT3/pagebiEv45DvD4bPn/form";
+    }, 2500);
+  </script>
+</body>
+</html>
